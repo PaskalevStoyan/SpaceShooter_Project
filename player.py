@@ -44,12 +44,9 @@ class Player(Ship):
         self.healthbar(window)
 
     def explosion(self, window):
-
-        if self.counter != len(self.PLAYER_EXP) - 1:
-
-            self.counter += 1
-            self.ship_img = self.PLAYER_EXP[self.counter]
-            window.blit(self.ship_img, (self.x, self.y))
+        self.counter += 1
+        self.ship_img = self.PLAYER_EXP[self.counter]
+        window.blit(self.ship_img, (self.x, self.y))
 
     def move_lasers(self, vel, objs):
         """

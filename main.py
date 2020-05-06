@@ -49,7 +49,6 @@ BACK_TO_MENU_BTN = pygame.image.load(os.path.join("Images/Shop", "Menu_BTN.png")
 MAP_MENU_BG = pygame.transform.scale(pygame.image.load(os.path.join("Images/BG", "bg.jpg")), (WIDTH, HEIGHT))
 PLANET_A = pygame.image.load(os.path.join("Images/Planets", "18.png"))
 PLANET_B = pygame.image.load(os.path.join("Images/Planets", "9.png"))
-PLANET_C = pygame.image.load(os.path.join("Images/Planets", "3.png"))
 
 player = Player(0, HEIGHT - 125)
 player.x = WIDTH // 2 - player.ship_img.get_width() // 2
@@ -329,8 +328,9 @@ def main():
             for laser in player.lasers:
                 player.lasers.remove(laser)
 
-            print(player.counter)
-            player.explosion(WIN)
+            if player.counter != len(player.PLAYER_EXP) - 1:
+                print(player.counter)
+                player.explosion(WIN)
         # ----------------------------------------------------------
 
         pygame.display.update()
@@ -853,7 +853,14 @@ def map_menu():
 
     def draw_map_menu():
         WIN.blit(MAP_MENU_BG, (0, 0))
+        font = pygame.font.SysFont('comicsans', 40)
+        planet_a_label = font.render("Planet A", 1, (255, 255, 255))
+        planet_b_label = font.render("Planet B", 1, (255, 255, 255))
 
+        WIN.blit(planet_a_label, (WIDTH // 2 - PLANET_A.get_width() // 2 - planet_a_label.get_width() // 2 - 30,
+                                  HEIGHT // 2 - PLANET_A.get_height() // 2))
+        WIN.blit(planet_b_label, (WIDTH // 2 + PLANET_A.get_width() // 2 - planet_a_label.get_width() // 2,
+                                  HEIGHT // 2 - PLANET_A.get_height() // 2))
         planet_a_button.draw(WIN)
         planet_b_button.draw(WIN)
 
@@ -885,16 +892,16 @@ def map_menu():
 
 def shop_menu():
     run = True
-    hp_crystals = 100
+
     with open("Status/Health_Crystals.txt", "r") as f:
         hp_crystals = int(f.read())
-    armor_crystals = 300
+
     with open("Status/Armor_Crystals.txt", "r") as f:
         armor_crystals = int(f.read())
-    vel_crystals = 300
+
     with open("Status/Speed_Crystals.txt", "r") as f:
         vel_crystals = int(f.read())
-    damage_crystals = 200
+
     with open("Status/Damage_Crystals.txt", "r") as f:
         damage_crystals = int(f.read())
 
@@ -970,7 +977,7 @@ def shop_menu():
                     main_menu()
                 # BYING HEALTH
                 if health_btn.isOverButton(pos):
-                    if player.money >= 200:
+                    if player.money >= hp_crystals:
                         if player.max_health < 500:
                             player.max_health += 10
                             player.health = player.max_health
@@ -986,18 +993,19 @@ def shop_menu():
 
                 # BYING ARMOR
                 elif armor_btn.isOverButton(pos):
-                    if player.money >= armor_crystals and player.armor <= 100:
-                        player.armor += 10
-                        player.money -= 200
-                        armor_crystals = int(armor_crystals) + 100
-                        print("Armor: ", player.armor)
-                        with open("Status/Armor.txt", "w+") as f:
-                            f.write(str(player.armor))
-                        with open("Status/Armor_Crystals.txt", "w+") as f:
-                            f.write(str(armor_crystals))
+                    if player.money >= armor_crystals:
+                        if player.armor + 10 <= 100:
+                            player.armor += 10
+                            player.money -= armor_crystals
+                            armor_crystals = int(armor_crystals) + 100
+                            print("Armor: ", player.armor)
+                            with open("Status/Armor.txt", "w+") as f:
+                                f.write(str(player.armor))
+                            with open("Status/Armor_Crystals.txt", "w+") as f:
+                                f.write(str(armor_crystals))
 
-                        with open("Status/Money.txt", "w+") as f:
-                            f.write(str(player.money))
+                            with open("Status/Money.txt", "w+") as f:
+                                f.write(str(player.money))
 
                 # BYING ATCK SPEED
                 elif speed_btn.isOverButton(pos):
@@ -1017,17 +1025,18 @@ def shop_menu():
                                 f.write(str(player.attk_speed_counter))
                 # BYING DAMAGE
                 elif damage_btn.isOverButton(pos):
-                    if player.money >= damage_crystals and player.damage <= 500:
-                        player.damage += 10
-                        player.money -= damage_crystals
-                        damage_crystals += 200
+                    if player.money >= damage_crystals:
+                        if player.damage + 10 <= 500:
+                            player.damage += 10
+                            player.money -= damage_crystals
+                            damage_crystals += 200
 
-                        with open("Status/Damage.txt", "w+") as f:
-                            f.write(str(player.damage))
-                        with open("Status/Damage_Crystals.txt", "w+") as f:
-                            f.write(str(damage_crystals))
-                        with open("Status/Money.txt", "w+") as f:
-                            f.write(str(player.money - damage_crystals))
+                            with open("Status/Damage.txt", "w+") as f:
+                                f.write(str(player.damage))
+                            with open("Status/Damage_Crystals.txt", "w+") as f:
+                                f.write(str(damage_crystals))
+                            with open("Status/Money.txt", "w+") as f:
+                                f.write(str(player.money - damage_crystals))
 
 
 def main_menu():
