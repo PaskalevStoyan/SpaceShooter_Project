@@ -42,7 +42,7 @@ def main(player):
     with open("Status/Money.txt", "r") as f:
         player.money = int(f.read())
 
-    level = 19
+    level = 0
     run = True
     FPS = 60
     lives = 5
@@ -355,6 +355,7 @@ def main(player):
             # BOSES ATTR
             elif level == 10:
                 create_Planet_A_Boss_1(player, boses)
+
             elif level == 20:
                 create_Planet_A_Boss_2(player, boses_2_a)
 
