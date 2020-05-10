@@ -10,6 +10,14 @@ WIDTH, HEIGHT = 1000, 700
 
 # Create Enemies/Boses for Planet A.
 def create_Planet_A_Enemies(player, enemies, level, wave_length):
+    """
+    Create Enemies of Planet A
+    :param player: player
+    :param enemies: enemies
+    :param level: Int
+    :param wave_length: Int
+    :return: None
+    """
     rand_choice = None
     if len(enemies) == 0:
         if level <= 4:
@@ -118,6 +126,12 @@ def create_Planet_A_Enemies(player, enemies, level, wave_length):
 
 
 def create_Planet_A_Boss_1(player, boses):
+    """
+    Creates Boss 1 of Planet A
+    :param player: player
+    :param boses: boses
+    :return:
+    """
     if len(boses) == 0:
         boss = Boss(350, -300)
         boss.health = 1000
@@ -136,6 +150,12 @@ def create_Planet_A_Boss_1(player, boses):
 
 
 def create_Planet_A_Boss_2(player, boses_2_a):
+    """
+    Creates Boss 2 of Plabet A
+    :param player: player
+    :param boses_2_a: boses_2_a
+    :return:
+    """
     if len(boses_2_a) == 0:
         boss2 = Boss_2_a(250, -300)
         boss2.health = 4000
@@ -156,6 +176,14 @@ def create_Planet_A_Boss_2(player, boses_2_a):
 # Create Enemies/Boses for Planet B
 
 def create_Planet_B_Enemies(player, level, enemies, wave_length):
+    """
+    Creates Enemies of Planet B
+    :param player: player
+    :param level: Int
+    :param enemies: enemies
+    :param wave_length: Int
+    :return: None
+    """
     rand_choice = None
     if len(enemies) == 0:
         if level <= 4:
@@ -271,6 +299,12 @@ def create_Planet_B_Enemies(player, level, enemies, wave_length):
 
 
 def create_Planet_B_Boss_1(boses_1_b, player):
+    """
+    Creates Boss 1 of Planet B
+    :param boses_1_b: boses_1_b
+    :param player: player
+    :return: None
+    """
     if len(boses_1_b) == 0:
         boss_1_b = Boss_1_b(0, -300)
         boss_1_b.x = WIDTH // 2 - boss_1_b.ship_img.get_width() // 2
@@ -288,6 +322,12 @@ def create_Planet_B_Boss_1(boses_1_b, player):
 
 
 def create_Planet_B_Boss_2(boses_2_b, player):
+    """
+    Creates Boss 2 of Planet B
+    :param boses_2_b: boses_2_b
+    :param player: player
+    :return: None
+    """
     if len(boses_2_b) == 0:
         boss_2_b = Boss_2_b(0, - 300)
         boss_2_b.x = WIDTH // 2 - boss_2_b.ship_img.get_width() // 2

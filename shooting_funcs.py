@@ -1,8 +1,21 @@
 import random
 from laser import collide
 
+# Planet A
+
 
 def make_enemies_shoot(level, enemies, player, laser_vel, FPS, lives, HEIGHT):
+    """
+    Making Enemies of Planet A Shoot
+    :param level: Int
+    :param enemies: enemies
+    :param player: player
+    :param laser_vel: Int
+    :param FPS: Int
+    :param lives: Int
+    :param HEIGHT: Int
+    :return: None
+    """
     for enemy in enemies[:]:
         enemy.move()
         enemy.move_lasers(laser_vel)
@@ -35,6 +48,13 @@ def make_enemies_shoot(level, enemies, player, laser_vel, FPS, lives, HEIGHT):
 
 
 def make_boss_1_a_shoot(boses, laser_vel, player):
+    """
+     Making Boss 1 of Planet A Shoot
+     :param boses: boses
+     :param laser_vel: Int
+     :param player: player
+     :return: None
+     """
     for boss in boses[:]:
         boss.move(3)
         boss.move_boss_lasers(laser_vel)
@@ -51,6 +71,14 @@ def make_boss_1_a_shoot(boses, laser_vel, player):
 
 
 def make_boss_2_a_shoot(boses_2_a, laser_vel, FPS, player):
+    """
+    Making Boss 2 of Planet A Shoot
+    :param boses_2_a: boses_2_a
+    :param laser_vel: Int
+    :param FPS: Int
+    :param player: player
+    :return: None
+    """
     for boss2 in boses_2_a[:]:
         boss2.move(3)
         boss2.move_boss_lasers(laser_vel)
@@ -76,6 +104,17 @@ def make_boss_2_a_shoot(boses_2_a, laser_vel, FPS, player):
 
 # PLANET B
 def make_enemies_b_shoot(level, enemies, player, laser_vel, FPS, lives, HEIGHT):
+    """
+    Making Enemies of Planet B Shoot
+    :param level: Int
+    :param enemies: enemies
+    :param player: player
+    :param laser_vel: Int
+    :param FPS: Int
+    :param lives: Int
+    :param HEIGHT: Int
+    :return: None
+    """
     for enemy in enemies[:]:
         enemy.move()
         enemy.move_lasers(laser_vel)
@@ -115,6 +154,14 @@ def make_enemies_b_shoot(level, enemies, player, laser_vel, FPS, lives, HEIGHT):
 
 
 def make_boss_1_b_shoot(boses_1_b, laser_vel, FPS, player):
+    """
+      Making the Boss 1 of Planet B Shoot
+      :param boses_1_b: boses_1_b
+      :param laser_vel: Int
+      :param FPS: Int
+      :param player: player
+      :return: None
+      """
     for boss_1_b in boses_1_b[:]:
         boss_1_b.move(3)
         boss_1_b.move_boss_laser(laser_vel)
@@ -131,6 +178,14 @@ def make_boss_1_b_shoot(boses_1_b, laser_vel, FPS, player):
 
 
 def make_boss_2_b_shoot(boses_2_b, laser_vel, FPS, player):
+    """
+    Making the Boss 2 of Planet B Shoot
+    :param boses_2_b: boses_2_b
+    :param laser_vel: Int
+    :param FPS: Int
+    :param player: player
+    :return: None
+    """
     for boss_2_b in boses_2_b[:]:
         boss_2_b.move(3)
         boss_2_b.move_boss_lasers(laser_vel)
