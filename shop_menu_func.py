@@ -2,8 +2,6 @@ import pygame
 import os
 from button import Button
 
-pygame.init()
-pygame.font.init()  # Init the font
 
 WIDTH, HEIGHT = 1000, 700
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -23,6 +21,10 @@ BACK_TO_MENU_BTN = pygame.image.load(os.path.join("Images/Shop", "Menu_BTN.png")
 
 
 def shop_menu(player):
+    # MONEY
+    with open("Status/Money.txt", "r") as f:
+        player.money = int(f.read())
+
     run = True
 
     with open("Status/Health_Crystals.txt", "r") as f:
@@ -121,7 +123,7 @@ def shop_menu(player):
                                 f.write(str(hp_crystals))
 
                             with open("Status/Money.txt", "w+") as f:
-                                f.write(str(player.money - hp_crystals))
+                                f.write(str(player.money))
 
                 # BYING ARMOR
                 elif armor_btn.isOverButton(pos):
@@ -168,4 +170,4 @@ def shop_menu(player):
                             with open("Status/Damage_Crystals.txt", "w+") as f:
                                 f.write(str(damage_crystals))
                             with open("Status/Money.txt", "w+") as f:
-                                f.write(str(player.money - damage_crystals))
+                                f.write(str(player.money))

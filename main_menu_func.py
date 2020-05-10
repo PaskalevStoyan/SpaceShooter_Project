@@ -5,8 +5,6 @@ from start_game_func import main
 from map_menu_func import map_menu
 from shop_menu_func import shop_menu
 
-pygame.init()
-pygame.font.init()  # Init the font
 
 WIDTH, HEIGHT = 1000, 700
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -21,7 +19,7 @@ INFO_GAME_BTN = pygame.image.load(os.path.join("Images/Main_Menu", "Info_BTN.png
 CAPTION_GAME_IMAGE = pygame.image.load(os.path.join("Images/Main_Menu", "header.png")).convert_alpha()
 
 
-def main_menu(WIN, player):
+def main_menu(player):
     run = True
 
     def draw_main_menu():

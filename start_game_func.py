@@ -1,19 +1,14 @@
 import pygame
 import os
-import random
-from laser import collide
-from enemy import Enemy
-from boss_1_a import Boss
-from boss_2_a import Boss_2_a
-from boss_1_b import Boss_1_b
-from boss_2_b import Boss_2_b
-pygame.init()
-pygame.font.init()  # Init the font
+import boss_2_b
+from create_Enemies_Boses import *
+from shooting_funcs import *
 
 WIDTH, HEIGHT = 1000, 700
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 
-BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join("Images/BG", "BG.jpg")), (WIDTH, HEIGHT)).convert_alpha()
+BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join("Images/BG", "BG.jpg")),
+                                    (WIDTH, HEIGHT)).convert_alpha()
 SHOP_CRYSTAL_PLAYER_IMAGE = pygame.image.load(os.path.join("Images/Shop", "Shop_Cristal_Icon_02.png")).convert_alpha()
 
 planet_a = True
@@ -47,7 +42,7 @@ def main(player):
     with open("Status/Money.txt", "r") as f:
         player.money = int(f.read())
 
-    level = 0
+    level = 19
     run = True
     FPS = 60
     lives = 5
@@ -101,6 +96,7 @@ def main(player):
                 won_planet_label = cleared_planet_font.render("CONGRATIOLATIONS! You can Proceed to planet B!",
                                                               1, (255, 255, 255))
                 WIN.blit(won_planet_label, (WIDTH / 2 - won_planet_label.get_width() / 2, 350))
+
                 with open("Status/Level_a.txt", "w+") as f:
                     f.write(str(level - 1))
 
@@ -354,291 +350,23 @@ def main(player):
         # CREATING PLANET A MOBS AND BOSES
         if planet_a:
             if level % 10 != 0:
-                rand_choice = None
-                if len(enemies) == 0:
-                    if level <= 4:
-                        wave_length += random.randrange(1, 2)
-                    elif 4 < level < 9:
-                        wave_length += random.randrange(1, 3)
-                    elif 9 <= level < 20:
-                        wave_length += random.randrange(1, 4)
-                    for i in range(wave_length):
-                        if level <= 4:
-                            rand_choice = random.choice(["enemy_1", "enemy_2", "enemy_3"])
+                create_Planet_A_Enemies(player, enemies, level, wave_length)
 
-                        elif 4 < level <= 9:
-                            rand_choice = random.choice(["enemy_1", "enemy_2", "enemy_3", "enemy_4"])
-
-                        elif 9 < level < 21:
-                            rand_choice = random.choice(["enemy_1", "enemy_2", "enemy_3", "enemy_4", "enemy_5"])
-                        if level < 20:
-                            enemy = Enemy(random.randrange(50, WIDTH - 200), random.randrange(-1000, -100),
-                                          rand_choice)
-
-                            enemy.choice_img = rand_choice
-                            enemies.append(enemy)
-                            # ENEMY ATTR
-                            if rand_choice == "enemy_1":
-                                enemy.max_health = 10
-                                enemy.health = enemy.max_health
-                                enemy.health_y = -15
-                                enemy.health_x = 12
-                                enemy.shoot_x = - 70
-                                enemy.shoot_y = - 35
-                                if player.armor < 30:
-                                    enemy.damage = 20
-                                elif player.armor >= 30:
-                                    enemy.damage = 10
-                                elif player.armor >= 70:
-                                    enemy.damage = 5
-                                elif player.armor == 100:
-                                    enemy.damage = 2
-                                enemy.enemy_vel = 3
-                            elif rand_choice == "enemy_2":
-                                enemy.max_health = 20
-                                enemy.health = enemy.max_health
-                                enemy.health_y = 10
-                                enemy.health_x = 5
-                                enemy.shoot_x = - 65
-                                enemy.shoot_y = - 65
-                                if player.armor < 30:
-                                    enemy.damage = 30
-                                elif player.armor >= 30:
-                                    enemy.damage = 20
-                                elif player.armor >= 70:
-                                    enemy.damage = 10
-                                elif player.armor == 100:
-                                    enemy.damage = 5
-                                enemy.enemy_vel = 3
-                            elif rand_choice == "enemy_3":
-                                enemy.max_health = 30
-                                enemy.health = enemy.max_health
-                                enemy.health_y = 10
-                                enemy.health_x = 5
-                                enemy.shoot_x = - 65
-                                enemy.shoot_y = - 65
-                                if player.armor < 30:
-                                    enemy.damage = 35
-                                elif player.armor >= 30:
-                                    enemy.damage = 25
-                                elif player.armor >= 70:
-                                    enemy.damage = 15
-                                elif player.armor == 100:
-                                    enemy.damage = 5
-                                enemy.enemy_vel = 2
-                            elif rand_choice == "enemy_4":
-                                enemy.health = 40
-                                enemy.max_health = enemy.health
-                                enemy.health_y = -10
-                                enemy.health_x = -10
-                                enemy.shoot_x = - 70
-                                enemy.shoot_y = - 50
-                                if player.armor < 30:
-                                    enemy.damage = 40
-                                elif player.armor >= 30:
-                                    enemy.damage = 30
-                                elif player.armor >= 70:
-                                    enemy.damage = 20
-                                elif player.armor == 100:
-                                    enemy.damage = 8
-                                enemy.enemy_vel = 2
-
-                            elif rand_choice == "enemy_5":
-                                enemy.health = 100
-                                enemy.max_health = enemy.health
-                                enemy.health_x = - 120
-                                enemy.health_y = - 150
-                                enemy.shoot_x = - 135
-                                enemy.shoot_y = - 80
-                                if player.armor < 30:
-                                    enemy.damage = 50
-                                elif player.armor >= 30:
-                                    enemy.damage = 30
-                                elif player.armor >= 70:
-                                    enemy.damage = 25
-                                elif player.armor == 100:
-                                    enemy.damage = 10
-                                enemy.enemy_vel = 2
             # BOSES ATTR
             elif level == 10:
-                if len(boses) == 0:
-                    boss = Boss(350, -300)
-                    boss.health = 1000
-                    boss.max_health = boss.health
-                    boss.health_x = - 180
-                    boss.health_y = 50
-                    if player.armor < 30:
-                        boss.damage = 10
-                    elif player.armor >= 30:
-                        boss.damage = 7
-                    elif player.armor >= 70:
-                        boss.damage = 5
-                    elif player.armor == 100:
-                        boss.damage = 3
-                    boses.append(boss)
+                create_Planet_A_Boss_1(player, boses)
             elif level == 20:
-                if len(boses_2_a) == 0 and len(enemies) == 0:
-                    boss2 = Boss_2_a(250, -300)
-                    boss2.health = 4000
-                    boss2.max_health = boss2.health
-                    boss2.health_x = - 140
-                    boss2.health_y = - 20
-                    if player.armor < 30:
-                        boss2.damage = 40
-                    elif player.armor >= 30:
-                        boss2.damage = 25
-                    elif player.armor >= 70:
-                        boss2.damage = 10
-                    elif player.armor == 100:
-                        boss2.damage = 6
-                    boses_2_a.append(boss2)
-        # CREATING PLANET B MOBS AND BOSES
+                create_Planet_A_Boss_2(player, boses_2_a)
+
         elif planet_b:
-            rand_choice = None
             if level % 10 != 0:
-                if len(enemies) == 0:
-                    if level <= 4:
-                        wave_length += random.randrange(1, 2)
-                    elif 4 < level < 9:
-                        wave_length += random.randrange(1, 3)
-                    elif 9 <= level < 20:
-                        wave_length += random.randrange(1, 4)
-                    for i in range(wave_length):
-                        if level <= 4:
-                            rand_choice = random.choice(
-                                ['enemy_1_b', 'enemy_2_b', 'enemy_3_b'])
+                create_Planet_B_Enemies(player, level, enemies, wave_length)
 
-                        elif 4 < level <= 9:
-                            rand_choice = random.choice(['enemy_1_b', 'enemy_2_b', 'enemy_3_b', 'enemy_4_b'])
-
-                        elif 9 < level <= 14:
-                            rand_choice = random.choice(['enemy_1_b', 'enemy_2_b', 'enemy_3_b',
-                                                         'enemy_4_b', 'enemy_5_b'])
-                        elif 15 < level < 30:
-                            rand_choice = random.choice(['enemy_1_b', 'enemy_2_b', 'enemy_3_b',
-                                                         'enemy_4_b', 'enemy_5_b', 'enemy_6_b'])
-
-                        enemy = Enemy(random.randrange(50, WIDTH - 200), random.randrange(-1000, - 100),
-                                      rand_choice)
-                        enemy.choice_img = rand_choice
-                        enemies.append(enemy)
-                        # ENEMY ATTR
-                        if rand_choice == "enemy_1_b":
-                            enemy.max_health = 100
-                            enemy.health = enemy.max_health
-                            if player.armor < 30:
-                                enemy.damage = 30
-                            elif player.armor >= 30:
-                                enemy.damage = 25
-                            elif player.armor >= 70:
-                                enemy.damage = 15
-                            elif player.armor == 100:
-                                enemy.damage = 10
-                            enemy.enemy_vel = 2
-                            enemy.shoot_x = - 40
-                            enemy.shoot_y = - 40
-                        elif rand_choice == "enemy_2_b":
-                            enemy.max_health = 200
-                            enemy.health = enemy.max_health
-                            if player.armor < 30:
-                                enemy.damage = 50
-                            elif player.armor >= 30:
-                                enemy.damage = 30
-                            elif player.armor >= 70:
-                                enemy.damage = 25
-                            elif player.armor == 100:
-                                enemy.damage = 10
-                            enemy.enemy_vel = 3
-                            enemy.shoot_x = - 40
-                            enemy.shoot_y = - 40
-                        elif rand_choice == "enemy_3_b":
-                            enemy.max_health = 250
-                            enemy.health = enemy.max_health
-                            if player.armor < 30:
-                                enemy.damage = 70
-                            elif player.armor >= 30:
-                                enemy.damage = 55
-                            elif player.armor >= 70:
-                                enemy.damage = 30
-                            elif player.armor == 100:
-                                enemy.damage = 15
-                            enemy.enemy_vel = 2
-                            enemy.shoot_x = - 40
-                            enemy.shoot_y = - 40
-                        elif rand_choice == "enemy_4_b":
-                            enemy.max_health = 300
-                            enemy.health = enemy.max_health
-                            if player.armor < 30:
-                                enemy.damage = 90
-                            elif player.armor >= 30:
-                                enemy.damage = 60
-                            elif player.armor >= 70:
-                                enemy.damage = 50
-                            elif player.armor == 100:
-                                enemy.damage = 30
-                            enemy.enemy_vel = 2
-                            enemy.shoot_x = - 40
-                            enemy.shoot_y = - 40
-                        elif rand_choice == "enemy_5_b":
-                            enemy.max_health = 300
-                            enemy.health = enemy.max_health
-                            if player.armor < 30:
-                                enemy.damage = 120
-                            elif player.armor >= 30:
-                                enemy.damage = 90
-                            elif player.armor >= 70:
-                                enemy.damage = 50
-                            elif player.armor == 100:
-                                enemy.damage = 25
-                            enemy.enemy_vel = 2
-                            enemy.shoot_x = - 80
-                            enemy.shoot_y = - 65
-                        elif rand_choice == "enemy_6_b":
-                            enemy.max_health = 400
-                            enemy.health = enemy.max_health
-                            if player.armor < 30:
-                                enemy.damage = 150
-                            elif player.armor >= 30:
-                                enemy.damage = 125
-                            elif player.armor >= 70:
-                                enemy.damage = 100
-                            elif player.armor == 100:
-                                enemy.damage = 75
-                            enemy.enemy_vel = 1
-                            enemy.shoot_x = - 80
-                            enemy.shoot_y = - 70
-            # BOSES ATTR
             elif level == 10:
-                if len(boses_1_b) == 0:
-                    boss_1_b = Boss_1_b(0, -300)
-                    boss_1_b.x = WIDTH // 2 - boss_1_b.ship_img.get_width() // 2
-                    boss_1_b.health = 5000
-                    boss_1_b.max_health = boss_1_b.health
-                    if player.armor < 30:
-                        boss_1_b.damage = 25
-                    elif player.armor >= 30:
-                        boss_1_b.damage = 20
-                    elif player.armor >= 70:
-                        boss_1_b.damage = 15
-                    elif player.armor == 100:
-                        boss_1_b.damage = 10
-                    boses_1_b.append(boss_1_b)
+                create_Planet_B_Boss_1(boses_1_b, player)
 
             elif level == 20:
-                if len(boses_2_b) == 0:
-                    boss_2_b = Boss_2_b(0, - 300)
-                    boss_2_b.x = WIDTH // 2 - boss_2_b.ship_img.get_width() // 2
-                    boss_2_b.health = 10000
-                    boss_2_b.max_health = boss_2_b.health
-                    if player.armor < 30:
-                        boss_2_b.damage = 250
-                    elif player.armor >= 30:
-                        boss_2_b.damage = 200
-                    elif player.armor >= 70:
-                        boss_2_b.damage = 170
-                    elif player.armor == 100:
-                        boss_2_b.damage = 150
-                    boses_2_b.append(boss_2_b)
+                create_Planet_B_Boss_2(boses_2_b, player)
 
         # IF X BUTTON IS CLICKED QUIT THE GAME
         # DOESNT SAVE THE MONEY GATHERED WHILE PLAYING THIS SESSION!!!
@@ -667,141 +395,25 @@ def main(player):
         # MAKING ENEMIES / PLAYER / BOSES SHOOT
         if planet_a:
             if not level % 10 == 0:
-                for enemy in enemies[:]:
-                    enemy.move()
-                    enemy.move_lasers(laser_vel)
-                    if level < 10:
-                        if random.randrange(0, FPS * 2) == 8:
-                            if enemy.y >= 0:
-                                enemy.index_laser_img = 0
-                                enemy.laser_img = enemy.ENEMY_MAP[enemy.choice_img][1][enemy.index_laser_img]
-                                enemy.shoot()
-
-                    elif level >= 10:
-                        if random.randrange(0, FPS) == 8:
-                            if enemy.y >= 0:
-                                enemy.index_laser_img = 0
-                                enemy.laser_img = enemy.ENEMY_MAP[enemy.choice_img][1][enemy.index_laser_img]
-                                enemy.shoot()
-                    elif level >= 15:
-                        if random.randrange(0, FPS / 2) == 8:
-                            if enemy.y >= 0:
-                                enemy.index_laser_img = 0
-                                enemy.laser_img = enemy.ENEMY_MAP[enemy.choice_img][1][enemy.index_laser_img]
-                                enemy.shoot()
-                    if collide(enemy, player):
-                        player.health -= player.health
-                    elif enemy.y + enemy.get_height() > HEIGHT:
-                        lives -= 1
-                        enemies.remove(enemy)
-
-                player.move_lasers(-laser_vel, enemies)
+                make_enemies_shoot(level, enemies, player, laser_vel, FPS, lives, HEIGHT)
 
             elif level == 10:
-                for boss in boses[:]:
-                    boss.move(3)
-                    boss.move_boss_lasers(laser_vel)
-                    if random.randrange(0, 45) == 8:
-                        if boss.y >= 0:
-                            boss.index_laser_img = 0
-                            boss.laser_img = boss.ENEMY_LASER_MAP[boss.index_laser_img]
-                            boss.shoot()
+                make_boss_1_a_shoot(boses, laser_vel, player)
 
-                    if collide(boss, player):
-                        player.health -= player.health
-
-                player.move_lasers(-laser_vel, boses)
             elif level == 20:
-                for boss2 in boses_2_a[:]:
-                    boss2.move(3)
-                    boss2.move_boss_lasers(laser_vel)
-                    boss2.move_boss_rockets(laser_vel)
+                make_boss_2_a_shoot(boses_2_a, laser_vel, FPS, player)
 
-                    if random.randrange(0, 45) == 8:
-                        if boss2.y >= 0:
-                            boss2.laser_img = boss2.BOSS_ATTACK_1[0]
-                            boss2.index_shooting = 0
-                            boss2.shoot1()
-                            boss2.shoot2()
-
-                    if random.randrange(0, FPS * 2) == 8:
-                        if boss2.y >= 0:
-                            boss2.index_rocket_ship = 0
-                            boss2.rocket_img = boss2.ROCKET[0][0]
-                            boss2.rocket_attack()
-
-                    if collide(boss2, player):
-                        player.health -= player.health
-                player.move_lasers(-laser_vel, boses_2_a)
         elif planet_b:
             if not level % 10 == 0:
-                for enemy in enemies[:]:
-                    enemy.move()
-                    enemy.move_lasers(laser_vel)
-                    if level <= 4:
-                        if random.randrange(0, FPS * 2) == 8:
-                            if enemy.y >= 0:
-                                enemy.index_laser_img = 0
-                                enemy.laser_img = enemy.ENEMY_MAP[enemy.choice_img][1][enemy.index_laser_img]
-                                enemy.shoot()
-
-                    elif 4 < level <= 9:
-                        if random.randrange(0, FPS) == 8:
-                            if enemy.y >= 0:
-                                enemy.index_laser_img = 0
-                                enemy.laser_img = enemy.ENEMY_MAP[enemy.choice_img][1][enemy.index_laser_img]
-                                enemy.shoot()
-                    elif 9 < level <= 13:
-                        if random.randrange(0, FPS / 2) == 8:
-                            if enemy.y >= 0:
-                                enemy.index_laser_img = 0
-                                enemy.laser_img = enemy.ENEMY_MAP[enemy.choice_img][1][enemy.index_laser_img]
-                                enemy.shoot()
-                    elif 21 <= level < 20:
-                        if random.randrange(0, FPS / 3) == 8:
-                            if enemy.y >= 0:
-                                enemy.index_laser_img = 0
-                                enemy.laser_img = enemy.ENEMY_MAP[enemy.choice_img][1][enemy.index_laser_img]
-                                enemy.shoot()
-
-                    if collide(enemy, player):
-                        player.health -= player.health
-                    elif enemy.y + enemy.get_height() > HEIGHT:
-                        lives -= 1
-                        enemies.remove(enemy)
-
-                player.move_lasers(-laser_vel, enemies)
+                make_enemies_b_shoot(level, enemies, player, laser_vel, FPS, lives, HEIGHT)
 
             elif level == 10:
-                for boss_1_b in boses_1_b[:]:
-                    boss_1_b.move(3)
-                    boss_1_b.move_boss_laser(laser_vel)
-                    boss_1_b.move_boss_rocket(laser_vel)
-                    if random.randrange(0, 40) == 8:
-                        if boss_1_b.y >= 0:
-                            boss_1_b.shoot_lasers()
-
-                    if random.randrange(0, FPS * 2) == 8:
-                        if boss_1_b.y >= 0:
-                            boss_1_b.shoot_rockets()
-
-                player.move_lasers(-laser_vel, boses_1_b)
+                make_boss_1_b_shoot(boses_1_b, laser_vel, FPS, player)
 
             elif level == 20:
-                for boss_2_b in boses_2_b[:]:
-                    boss_2_b.move(3)
-                    boss_2_b.move_boss_lasers(laser_vel)
-                    boss_2_b.move_boss_rockets(laser_vel)
-                    boss_2_b.move_boss_robots(10)
-                    if random.randrange(0, 45) == 8:
-                        if boss_2_b.y >= -10:
-                            boss_2_b.shoot_lasers()
-                    if random.randrange(0, FPS * 4) == 8:
-                        if boss_2_b.y >= - 10:
-                            boss_2_b.shoot_rockets()
-                    if random.randrange(0, FPS) == 8:
-                        if boss_2_b.y >= - 10:
-                            boss_2_b.create_robots()
+                make_boss_2_b_shoot(boses_2_b, laser_vel, FPS, player)
 
-                player.move_lasers(-laser_vel, boses_2_b)
         # -----------------------------------------------
+
+
+

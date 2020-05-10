@@ -2,15 +2,12 @@ import pygame
 import os
 from button import Button
 
-pygame.init()
-pygame.font.init()  # Init the font
-
-
 WIDTH, HEIGHT = 1000, 700
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # MAP MENU
-MAP_MENU_BG = pygame.transform.scale(pygame.image.load(os.path.join("Images/BG", "bg.jpg")), (WIDTH, HEIGHT)).convert_alpha()
+MAP_MENU_BG = pygame.transform.scale(pygame.image.load(os.path.join("Images/BG", "bg.jpg")),
+                                     (WIDTH, HEIGHT)).convert_alpha()
 PLANET_A = pygame.image.load(os.path.join("Images/Planets", "18.png")).convert_alpha()
 PLANET_B = pygame.image.load(os.path.join("Images/Planets", "9.png")).convert_alpha()
 

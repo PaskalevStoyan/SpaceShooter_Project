@@ -7,13 +7,15 @@ pygame.init()
 pygame.font.init()  # Init the font
 
 WIDTH, HEIGHT = 1000, 700
-WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Space Invaders")
 
+# Init the player
 player = Player(0, HEIGHT - 125)
 player.x = WIDTH // 2 - player.ship_img.get_width() // 2
 
-main_menu(WIN, player)
+
+# Start Game Function
+main_menu(player)
 
 
 

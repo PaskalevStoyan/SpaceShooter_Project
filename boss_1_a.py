@@ -4,37 +4,39 @@ from laser import Laser
 from ship import Ship
 
 WIDTH, HEIGHT = 1000, 700
+WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+
 # BOSS SHIPS / BOSS EXPLOSION
-ENEMY_BOSS_SHIP_1 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Boss", "enemy_boss_ship.png"))
+ENEMY_BOSS_SHIP_1 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Boss", "enemy_boss_ship.png")).convert_alpha()
 ENEMY_BOSS_SHIP_EXPLOSION_5 = pygame.image.load(
-    os.path.join("Images/Enemy/Planet_A/Ship_Explosion/Ship6_Explosion", "Ship5_Explosion_008.png"))
+    os.path.join("Images/Enemy/Planet_A/Ship_Explosion/Ship6_Explosion", "Ship5_Explosion_008.png")).convert_alpha()
 ENEMY_BOSS_SHIP_EXPLOSION_6 = pygame.image.load(
-    os.path.join("Images/Enemy/Planet_A/Ship_Explosion/Ship6_Explosion", "Ship5_Explosion_011.png"))
+    os.path.join("Images/Enemy/Planet_A/Ship_Explosion/Ship6_Explosion", "Ship5_Explosion_011.png")).convert_alpha()
 ENEMY_BOSS_SHIP_EXPLOSION_7 = pygame.image.load(
-    os.path.join("Images/Enemy/Planet_A/Ship_Explosion/Ship6_Explosion", "Ship5_Explosion_013.png"))
+    os.path.join("Images/Enemy/Planet_A/Ship_Explosion/Ship6_Explosion", "Ship5_Explosion_013.png")).convert_alpha()
 ENEMY_BOSS_SHIP_EXPLOSION_8 = pygame.image.load(
-    os.path.join("Images/Enemy/Planet_A/Ship_Explosion/Ship6_Explosion", "Ship5_Explosion_014.png"))
+    os.path.join("Images/Enemy/Planet_A/Ship_Explosion/Ship6_Explosion", "Ship5_Explosion_014.png")).convert_alpha()
 ENEMY_BOSS_SHIP_EXPLOSION_9 = pygame.image.load(
-    os.path.join("Images/Enemy/Planet_A/Ship_Explosion/Ship6_Explosion", "Ship5_Explosion_017.png"))
+    os.path.join("Images/Enemy/Planet_A/Ship_Explosion/Ship6_Explosion", "Ship5_Explosion_017.png")).convert_alpha()
 ENEMY_BOSS_SHIP_EXPLOSION_10 = pygame.image.load(
-    os.path.join("Images/Enemy/Planet_A/Ship_Explosion/Ship6_Explosion", "Ship5_Explosion_019.png"))
+    os.path.join("Images/Enemy/Planet_A/Ship_Explosion/Ship6_Explosion", "Ship5_Explosion_019.png")).convert_alpha()
 
 # BOSS LASERS
-BOSS_LASER_1 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_1.png"))
-BOSS_LASER_2 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_2.png"))
-BOSS_LASER_3 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_3.png"))
-BOSS_LASER_4 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_4.png"))
-BOSS_LASER_5 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_asset.png"))
-BOSS_LASER_EXPLOSION_1 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_exp1.png"))
-BOSS_LASER_EXPLOSION_2 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_exp2.png"))
-BOSS_LASER_EXPLOSION_3 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_exp3.png"))
-BOSS_LASER_EXPLOSION_4 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_exp4.png"))
-BOSS_LASER_EXPLOSION_5 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_exp5.png"))
-BOSS_LASER_EXPLOSION_6 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_exp6.png"))
-BOSS_LASER_EXPLOSION_7 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_exp7.png"))
-BOSS_LASER_EXPLOSION_8 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_exp8.png"))
-BOSS_LASER_EXPLOSION_9 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_exp9.png"))
-BOSS_LASER_EXPLOSION_10 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_exp10.png"))
+BOSS_LASER_1 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_1.png")).convert_alpha()
+BOSS_LASER_2 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_2.png")).convert_alpha()
+BOSS_LASER_3 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_3.png")).convert_alpha()
+BOSS_LASER_4 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_4.png")).convert_alpha()
+BOSS_LASER_5 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_asset.png")).convert_alpha()
+BOSS_LASER_EXPLOSION_1 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_exp1.png")).convert_alpha()
+BOSS_LASER_EXPLOSION_2 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_exp2.png")).convert_alpha()
+BOSS_LASER_EXPLOSION_3 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_exp3.png")).convert_alpha()
+BOSS_LASER_EXPLOSION_4 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_exp4.png")).convert_alpha()
+BOSS_LASER_EXPLOSION_5 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_exp5.png")).convert_alpha()
+BOSS_LASER_EXPLOSION_6 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_exp6.png")).convert_alpha()
+BOSS_LASER_EXPLOSION_7 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_exp7.png")).convert_alpha()
+BOSS_LASER_EXPLOSION_8 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_exp8.png")).convert_alpha()
+BOSS_LASER_EXPLOSION_9 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_exp9.png")).convert_alpha()
+BOSS_LASER_EXPLOSION_10 = pygame.image.load(os.path.join("Images/Enemy/Planet_A/Enemy_lasers/Shot6", "shot6_exp10.png")).convert_alpha()
 
 
 class Boss(Ship):
