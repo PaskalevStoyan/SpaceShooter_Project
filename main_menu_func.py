@@ -27,7 +27,6 @@ def main_menu(player):
     global planet_a
     global planet_b
 
-
     def draw_main_menu():
         WIN.blit(BG_MAIN_MENU, (0, 0))
         WIN.blit(CAPTION_GAME_IMAGE, (WIDTH / 2 - CAPTION_GAME_IMAGE.get_width() / 2, 50))

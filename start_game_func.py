@@ -1,6 +1,5 @@
 import pygame
 import os
-import boss_2_b
 from create_Enemies_Boses import *
 from shooting_funcs import *
 
@@ -100,6 +99,7 @@ def main(player, planet_a, planet_b):
                 won_planet_label = cleared_planet_font.render("CONGRATIOLATIONS YOU WON THE GAME!", 1, (255, 255, 255))
                 WIN.blit(won_planet_label, (WIDTH / 2 - won_planet_label.get_width() / 2, 350))
 
+
         # LABELING PLAYER STATS
         player_stat_label = player_status_font.render(f"Player Stats:", 1, (255, 255, 255))
         player_health_label = player_stat_font.render(f"Health: {player.health}", 1, (255, 255, 255))
@@ -135,7 +135,7 @@ def main(player, planet_a, planet_b):
                         enemy.lasers.remove(laser)
                         player.health -= enemy.damage
             else:
-                # SHIP EXPLOSION ANIMATION
+                # ENEMY EXPLOSION ANIMATION
                 enemy.enemy_vel = 0
                 enemy.index_ship_img += 1
                 enemy.ship_img = enemy.ENEMY_MAP[enemy.choice_img][0][enemy.index_ship_img]
@@ -155,9 +155,10 @@ def main(player, planet_a, planet_b):
                 boss.healthshow(WIN)
 
                 for laser in boss.lasers:
-                    # CHANGE ENEMY LASER AFTER COLLISION
+                    # CHANGING BOSS LASER ANIMATION
                     laser.change_laser_boss1(boss, WIN)
 
+                    # CHANGE BOSS LASER ANIMATION AFTER COLLISION OVER PLAYER
                     if laser.collision(player):
                         if boss.index_laser_img >= len(boss.ENEMY_LASER_MAP) - 1:
                             boss.index_laser_img = 4
@@ -168,6 +169,7 @@ def main(player, planet_a, planet_b):
                             boss.lasers.remove(laser)
 
             else:
+                # BOSS EXPLOSION ANIMATION
                 if boss.index_ship_img + 1 >= FPS:
                     boss.index_ship_img = 0
                 boss.index_ship_img += 1
@@ -197,11 +199,12 @@ def main(player, planet_a, planet_b):
                             boss2.rockets.remove(rocket)
                             player.health -= player.max_health
                 for laser in boss2.lasers:
+                    # CHANGE BOSS 2 LASER ANIMATION
                     laser.change_laser_boss_2_a(boss2, WIN)
 
                     if boss2.index_shooting != len(boss2.BOSS_SHOOT_IMAGE) - 1:
                         boss2.change_to_shooting_ship(WIN)
-
+                    # CHANGE BOSS 2 LASER AFTER COLLISION OVER PLAYER
                     if laser.collision_boss_2(player):
                         if boss2.index_laser_img >= len(boss2.BOSS_ATTACK_1_EXP) - 1:
                             boss2.index_laser_img = 0
@@ -210,6 +213,7 @@ def main(player, planet_a, planet_b):
                         if boss2.index_laser_img == len(boss2.BOSS_ATTACK_1_EXP) - 1:
                             boss2.lasers.remove(laser)
             else:
+                # BOSS 2 EXPLOSION ANIMATION
                 if boss2.index_ship_img + 1 >= FPS:
                     boss2.index_ship_img = 0
                 boss2.index_ship_img += 1
@@ -254,19 +258,19 @@ def main(player, planet_a, planet_b):
             if boss2_b.health > 0:
                 boss2_b.draw(WIN)
                 boss2_b.healthshow(WIN)
-                for laser in boss_2_b.lasers:
-                    laser.change_laser_boss_2_b(boss_2_b, WIN)
+                for laser in boss2_b.lasers:
+                    laser.change_laser_boss_2_b(boss2_b, WIN)
                     if laser.collision(player):
                         boss2_b.lasers.remove(laser)
                         player.health -= boss2_b.damage
 
-                for rocket in boss_2_b.rockets:
-                    rocket.change_rocket_boss_2_b(boss_2_b, WIN)
+                for rocket in boss2_b.rockets:
+                    rocket.change_rocket_boss_2_b(boss2_b, WIN)
                     if rocket.collision(player):
                         boss2_b.rockets.remove(rocket)
                         player.health -= player.max_health
 
-                for robot in boss_2_b.robots:
+                for robot in boss2_b.robots:
                     robot.change_robot_image(boss2_b, WIN)
                     if robot.collision(player):
                         player.health -= 10
@@ -326,6 +330,8 @@ def main(player, planet_a, planet_b):
                         planet_b = True
                         planet_a = False
                         run = False
+                        player.x = WIDTH // 2 - player.ship_img.get_width() // 2
+                        player.y = HEIGHT - 125
                     else:
                         continue
         elif planet_b:
@@ -335,6 +341,8 @@ def main(player, planet_a, planet_b):
                 if cleared:
                     if cleared_count > FPS * 3:
                         run = False
+                        player.x = WIDTH // 2 - player.ship_img.get_width() // 2
+                        player.y = HEIGHT - 125
                     else:
                         continue
         # IF THE LENGTH OF ALL THE MOBS [ENEMIES/BOSES] IS == 0 LEVEL += 1 BUT IF RUN IS FALSE CONTINUE
