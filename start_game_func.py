@@ -11,17 +11,12 @@ BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join("Images/BG", 
                                     (WIDTH, HEIGHT)).convert_alpha()
 SHOP_CRYSTAL_PLAYER_IMAGE = pygame.image.load(os.path.join("Images/Shop", "Shop_Cristal_Icon_02.png")).convert_alpha()
 
-planet_a = True
-planet_b = False
 with open("Status/Level_a.txt", "r") as f:
     level_a = int(f.read())
 
 
 # Main Loop
-def main(player):
-    global planet_a
-    global planet_b
-
+def main(player, planet_a, planet_b):
     # ARMOR
     with open("Status/Armor.txt", "r") as f:
         player.armor = int(f.read())
@@ -47,13 +42,14 @@ def main(player):
     FPS = 60
     lives = 5
     laser_vel = 5
-
+    # FONTS
     main_font = pygame.font.SysFont("Arial", 40)
     lost_font = pygame.font.SysFont("Arial", 60)
     score_font = pygame.font.SysFont("Arial", 40)
     cleared_planet_font = pygame.font.SysFont("Arial", 40)
     player_status_font = pygame.font.SysFont("Arial", 25)
     player_stat_font = pygame.font.SysFont("Arial", 20)
+
     # ENEMY ATTR
     enemies = []
     wave_length = 5
@@ -63,21 +59,21 @@ def main(player):
     boses_2_a = []
     boses_1_b = []
     boses_2_b = []
+
     clock = pygame.time.Clock()
     lost = False
     lost_count = 0
-
     cleared_count = 0
 
     # REDRAW WINDOW
     def redraw_WIN():
         WIN.blit(BACKGROUND, (0, 0))
 
-        # Draw text
-
         if not level == 21:
             level_label = main_font.render(f"Level: {level}", 1, (255, 255, 255))
             WIN.blit(level_label, (WIDTH - level_label.get_width() - 10, 10))
+        # IF LEVEL % 10 != 0 SHOW LIVES, ELSE HIDE THEM AND SHOW BOSS HP
+        # BOSS HP FUNC IS IN THEIR CLASSES
 
         if level % 10 != 0:
             lives_label = main_font.render(f"Lives: {lives}", 1, (255, 255, 255))
@@ -90,7 +86,7 @@ def main(player):
         if lost:
             lost_label = lost_font.render("You Lost!!", 1, (255, 255, 255))
             WIN.blit(lost_label, (WIDTH / 2 - lost_label.get_width() / 2, 325))
-
+        # IF LEVEL > 20 SHOW TEXT ON SCREEN
         if level > 20:
             if planet_a:
                 won_planet_label = cleared_planet_font.render("CONGRATIOLATIONS! You can Proceed to planet B!",
@@ -104,14 +100,14 @@ def main(player):
                 won_planet_label = cleared_planet_font.render("CONGRATIOLATIONS YOU WON THE GAME!", 1, (255, 255, 255))
                 WIN.blit(won_planet_label, (WIDTH / 2 - won_planet_label.get_width() / 2, 350))
 
-        # BLITTING PLAYER STATS
+        # LABELING PLAYER STATS
         player_stat_label = player_status_font.render(f"Player Stats:", 1, (255, 255, 255))
         player_health_label = player_stat_font.render(f"Health: {player.health}", 1, (255, 255, 255))
         player_damage_label = player_stat_font.render(f"Damage: {player.damage}", 1, (255, 255, 255))
         player_armor_label = player_stat_font.render(f"Armor: {player.armor}", 1, (255, 255, 255))
         player_attk_speed_label = player_stat_font.render(f"Attk Speed: {player.attk_speed_counter}", 1,
                                                           (255, 255, 255))
-
+        # BLITTING PLAYER STATS
         WIN.blit(player_stat_label, (10, 70))
         WIN.blit(player_health_label, (10, 115))
         WIN.blit(player_damage_label, (10, 140))
@@ -120,35 +116,37 @@ def main(player):
 
         # ----------------------------------------------------------
         # DRAWING ENEMIES / BOSES / PLAYER
+
         # NORMAL MOBS
         for enemy in enemies:
             if enemy.health > 0:
                 enemy.draw(WIN)
+
+                for laser in enemy.lasers:
+                    laser.change_enemy_laser(enemy, WIN)  # CHANGING THE IMAGE OF THE LASER
+
+                    # IF COLLISION SHOW EXPLOSION AROUND PLAYER
+                    if laser.collision(player):
+                        if enemy.index_laser_img >= len(enemy.ENEMY_MAP[enemy.choice_img][1]) - 1:
+                            enemy.index_laser_img = 0
+                        enemy.change_collide_laser(WIN, player)
+                        # IF INDEX LASER == LEN OF THE LASER LIST - 1 REMOVE LASER/PLAYER HEALTH -= ENEMY DAMAGE
+                    if enemy.index_laser_img == len(enemy.ENEMY_MAP[enemy.choice_img][1]) - 1:
+                        enemy.lasers.remove(laser)
+                        player.health -= enemy.damage
             else:
+                # SHIP EXPLOSION ANIMATION
                 enemy.enemy_vel = 0
                 enemy.index_ship_img += 1
                 enemy.ship_img = enemy.ENEMY_MAP[enemy.choice_img][0][enemy.index_ship_img]
                 pygame.time.delay(5)
                 enemy.draw(WIN)
-
                 if enemy.index_ship_img == len(enemy.ENEMY_MAP[enemy.choice_img][0]) - 1:
                     enemies.remove(enemy)
                     if planet_a:
                         player.money += 10
                     elif planet_b:
                         player.money += 30
-            for laser in enemy.lasers:
-                laser.change_enemy_laser(enemy, WIN)  # CHANGING THE IMAGE OF THE LASER
-
-                # IF COLLISION SHOW EXPLOSION AROUND PLAYER
-                if laser.collision(player):
-                    if enemy.index_laser_img >= len(enemy.ENEMY_MAP[enemy.choice_img][1]) - 1:
-                        enemy.index_laser_img = 0
-                    enemy.change_collide_laser(WIN, player)
-                    # IF INDEX LASER == LEN OF THE LASER LIST - 1 REMOVE LASER/PLAYER HEALTH -= ENEMY DAMAGE
-                if enemy.index_laser_img == len(enemy.ENEMY_MAP[enemy.choice_img][1]) - 1:
-                    enemy.lasers.remove(laser)
-                    player.health -= enemy.damage
 
         # BOSS 1 PLANET A
         for boss in boses:
@@ -348,10 +346,14 @@ def main(player):
                 continue
             level += 1
         # CREATING PLANET A MOBS AND BOSES
+
         if planet_a:
             if level % 10 != 0:
                 create_Planet_A_Enemies(player, enemies, level, wave_length)
-
+                for enemy in enemies:
+                    if enemy.y + enemy.get_height() > HEIGHT:
+                        lives -= 1
+                        enemies.remove(enemy)
             # BOSES ATTR
             elif level == 10:
                 create_Planet_A_Boss_1(player, boses)
@@ -360,6 +362,7 @@ def main(player):
                 create_Planet_A_Boss_2(player, boses_2_a)
 
         elif planet_b:
+            print(2)
             if level % 10 != 0:
                 create_Planet_B_Enemies(player, level, enemies, wave_length)
 
@@ -415,6 +418,3 @@ def main(player):
                 make_boss_2_b_shoot(boses_2_b, laser_vel, FPS, player)
 
         # -----------------------------------------------
-
-
-

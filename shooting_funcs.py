@@ -40,9 +40,6 @@ def make_enemies_shoot(level, enemies, player, laser_vel, FPS, lives, HEIGHT):
                     enemy.shoot()
         if collide(enemy, player):
             player.health -= player.health
-        elif enemy.y + enemy.get_height() > HEIGHT:
-            lives -= 1
-            enemies.remove(enemy)
 
     player.move_lasers(-laser_vel, enemies)
 

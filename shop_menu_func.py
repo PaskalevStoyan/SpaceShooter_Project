@@ -21,6 +21,7 @@ BACK_TO_MENU_BTN = pygame.image.load(os.path.join("Images/Shop", "Menu_BTN.png")
 
 
 def shop_menu(player):
+
     # MONEY
     with open("Status/Money.txt", "r") as f:
         player.money = int(f.read())
@@ -38,6 +39,13 @@ def shop_menu(player):
 
     with open("Status/Damage_Crystals.txt", "r") as f:
         damage_crystals = int(f.read())
+
+        # BUTTONS
+    back_to_menu_btn = Button(WIDTH - 130, HEIGHT - 130, 410, 230, BACK_TO_MENU_BTN)
+    armor_btn = Button(WIDTH / 2 - SHOP_ARMOR_IMAGE.get_width() / 2, 100, 410, 230, SHOP_ARMOR_IMAGE)
+    health_btn = Button(WIDTH / 2 - SHOP_HEALTH_IMAGE.get_width() / 2, 220, 410, 230, SHOP_HEALTH_IMAGE)
+    damage_btn = Button(WIDTH / 2 - SHOP_DAMAGE_IMAGE.get_width() / 2, 340, 410, 230, SHOP_DAMAGE_IMAGE)
+    speed_btn = Button(WIDTH / 2 - SHOP_SPEED_IMAGE.get_width() / 2, 460, 410, 230, SHOP_SPEED_IMAGE)
 
     def draw_shop():
 
@@ -63,6 +71,7 @@ def shop_menu(player):
         WIN.blit(SHOP_CAPTION_IMAGE, (WIDTH / 2 - SHOP_CAPTION_IMAGE.get_width() / 2, 18))
         WIN.blit(SHOP_CRYSTAL_PLAYER_IMAGE, (50, 15))
         WIN.blit(player_money, (100, 28))
+
         # ARMOR
         WIN.blit(armor_crystal_price, (WIDTH // 2 - SHOP_ARMOR_IMAGE.get_width() / 2 + 240, 130))
         WIN.blit(SHOP_CRYSTAL_IMAGE, (WIDTH / 2 - SHOP_ARMOR_IMAGE.get_width() / 2 + 160, 110))
@@ -90,13 +99,6 @@ def shop_menu(player):
         health_btn.draw(WIN)
         damage_btn.draw(WIN)
         speed_btn.draw(WIN)
-
-    # BUTTONS
-    back_to_menu_btn = Button(WIDTH - 130, HEIGHT - 130, 410, 230, BACK_TO_MENU_BTN)
-    armor_btn = Button(WIDTH / 2 - SHOP_ARMOR_IMAGE.get_width() / 2, 100, 410, 230, SHOP_ARMOR_IMAGE)
-    health_btn = Button(WIDTH / 2 - SHOP_HEALTH_IMAGE.get_width() / 2, 220, 410, 230, SHOP_HEALTH_IMAGE)
-    damage_btn = Button(WIDTH / 2 - SHOP_DAMAGE_IMAGE.get_width() / 2, 340, 410, 230, SHOP_DAMAGE_IMAGE)
-    speed_btn = Button(WIDTH / 2 - SHOP_SPEED_IMAGE.get_width() / 2, 460, 410, 230, SHOP_SPEED_IMAGE)
 
     while run:
         draw_shop()

@@ -3,7 +3,7 @@ import pygame
 from player import Player
 from main_menu_func import main_menu
 
-pygame.init()
+pygame.init()  # Init pygame
 pygame.font.init()  # Init the font
 
 WIDTH, HEIGHT = 1000, 700
@@ -13,20 +13,5 @@ pygame.display.set_caption("Space Invaders")
 player = Player(0, HEIGHT - 125)
 player.x = WIDTH // 2 - player.ship_img.get_width() // 2
 
-
 # Start Game Function
 main_menu(player)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
